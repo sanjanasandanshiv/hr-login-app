@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicants for {{ job['job_title'] }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Applicants for: <strong>{{ job['job_title'] }}</strong></h2>
+        <p><a href="/dashboard">&larr; Back to Dashboard</a></p>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Applicant Name</th>
+                            <th>Match Score</th>
+                            <th>Email</th>
+                            <th>Applied On</th>
+                            <th width="25%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for applicant in applicants %}
+                        <tr>
+                            <td>{{ applicant['applicant_name'] }}</td>
+                            <td><span class="badge badge-primary" style="font-size: 1rem;">{{ applicant['match_score'] }}%</span></td>
+                            <td>{{ applicant['applicant_email'] }}</td>
+                            <td>{{ applicant['applied_at'].split(' ')[0] }}</td>
+                            <td>
+                                <a href="/applicant/{{ applicant['id'] }}" class="btn btn-sm btn-info">View Details</a>
+                                <form action="/applicant/{{ applicant['id'] }}/delete" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to remove this applicant?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No applications have been submitted for this job yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

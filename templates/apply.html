@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply for {{ job.job_title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5 mb-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ job.job_title }}</h2>
+                <h6 class="card-subtitle mb-2 text-muted">{{ job.location }}</h6>
+            </div>
+            <div class="card-body">
+                <h4>Job Description</h4>
+                <p style="white-space: pre-wrap;">{{ job.job_description | safe }}</p>
+                <hr>
+                <h4>Submit Your Application</h4>
+                <div class="alert alert-info"><strong>Please Note:</strong> A PDF resume format is preferred. Your application may be scored based on keywords mentioned in the job description.</div>
+                <form id="applicationForm">
+                    <div class="form-group"><label for="applicant_name">Full Name</label><input type="text" class="form-control" id="applicant_name" required></div>
+                    <div class="form-group"><label for="applicant_email">Email Address</label><input type="email" class="form-control" id="applicant_email" required></div>
+                    <div class="form-group"><label for="applicant_contact">Contact Number</label><input type="tel" class="form-control" id="applicant_contact"></div>
+                    <div class="form-group"><label for="resume">Upload Resume (PDF, DOCX)</label><input type="file" class="form-control-file" id="resume" accept=".pdf,.docx" required></div>
+                    <div class="form-group"><label for="photo">Upload Photo (JPG, PNG)</label><input type="file" class="form-control-file" id="photo" accept=".jpg,.jpeg,.png"></div>
+                    <button type="submit" class="btn btn-success">Apply Now</button>
+                </form>
+                <div id="successMessage" class="alert alert-success mt-3" style="display:none;">Your application has been submitted successfully!</div>
+            </div>
+        </div>
+    </div>
+<script>
+    document.getElementById('applicationForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        formData.append('applicant_name', document.getElementById('applicant_name').value);
+        formData.append('applicant_email', document.getElementById('applicant_email').value);
+        formData.append('applicant_contact', document.getElementById('applicant_contact').value);
+        formData.append('resume', document.getElementById('resume').files[0]);
+        const photoFile = document.getElementById('photo').files[0];
+        if (photoFile) { formData.append('photo', photoFile); }
+        const response = await fetch(window.location.pathname, { method: 'POST', body: formData });
+        if (response.ok) {
+            document.getElementById('applicationForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        } else {
+            const result = await response.json();
+            alert('Error submitting application: ' + result.message);
+        }
+    });
+</script>
+</body>
+</html>

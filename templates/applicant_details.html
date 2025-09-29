@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Applicant Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <h2>Applicant: <strong>{{ applicant['applicant_name'] }}</strong></h2>
+    <p><a href="/job/{{ applicant['job_id'] }}/applicants">&larr; Back to Applicant List</a></p>
+    <hr>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">AI-Generated Feedback</div>
+                <div class="card-body">
+                    <p style="white-space: pre-wrap;">{{ applicant['ai_feedback'] }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">Job Match Analysis</div>
+                <div class="card-body">
+                    <h4>Match Score: <span class="badge badge-success">{{ applicant['match_score'] }}%</span></h4>
+                    <hr>
+                    <p><strong>✅ Matched Skills:</strong></p>
+                    <p>{{ applicant['matched_skills'] }}</p>
+                    <hr>
+                    <p><strong>❌ Missing Skills:</strong></p>
+                    <p>{{ applicant['missing_skills'] }}</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Documents</div>
+                <div class="card-body">
+                    <a href="/uploads/{{ applicant['resume_filename'] }}" target="_blank" class="btn btn-primary btn-block">View Resume</a>
+                    {% if applicant['photo_filename'] %}
+                        <a href="/uploads/{{ applicant['photo_filename'] }}" target="_blank" "btn btn-secondary btn-block mt-2">View Photo</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

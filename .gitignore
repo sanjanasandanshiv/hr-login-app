@@ -1,0 +1,11 @@
+# Environment
+venv/
+
+# Python cache
+__pycache__/
+
+# Database file
+*.db
+
+# Uploaded user content
+uploads/
