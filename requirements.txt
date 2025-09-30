@@ -1,4 +1,3 @@
-# requirements.txt
 gunicorn
 Flask
 Flask-Cors
